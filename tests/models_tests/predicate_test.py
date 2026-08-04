@@ -122,7 +122,7 @@ def test_change_signature_returns_correct_form_of_predicate_with_signature_chang
     assert predicate == expected_predicate_output
 
 
-def test_grounded_predicate_copy_default_is_not_masked():
+def test_grounded_predicate_copy_default_preserves_mask():
     # Arrange
     predicate = GroundedPredicate(
         name="at",
@@ -135,26 +135,26 @@ def test_grounded_predicate_copy_default_is_not_masked():
     result = predicate.copy()
 
     # Assert
-    assert result.is_masked is False
+    assert result.is_masked is True
 
 
-def test_grounded_predicate_copy_with_is_masked_true_returns_masked_predicate():
+def test_grounded_predicate_copy_with_preserve_mask_false_returns_unmasked_predicate():
     # Arrange
     predicate = GroundedPredicate(
         name="at",
         signature={"?x": PDDLType("object")},
         object_mapping={"?x": "obj1"},
-        is_masked=False,
+        is_masked=True,
     )
 
     # Act
-    result = predicate.copy(is_masked=True)
+    result = predicate.copy(preserve_mask=False)
 
     # Assert
-    assert result.is_masked is True
+    assert result.is_masked is False
 
 
-def test_grounded_predicate_copy_preserves_is_positive_and_handles_is_masked():
+def test_grounded_predicate_copy_preserves_is_positive_and_propagates_mask():
     # Arrange
     predicate = GroundedPredicate(
         name="at",
@@ -165,7 +165,7 @@ def test_grounded_predicate_copy_preserves_is_positive_and_handles_is_masked():
     )
 
     # Act
-    result = predicate.copy(is_negated=True, is_masked=True)
+    result = predicate.copy(is_negated=True)
 
     # Assert
     assert result.is_positive is False
