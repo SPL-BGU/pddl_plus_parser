@@ -138,10 +138,11 @@ class GroundedPredicate(Predicate):
     def __ne__(self, other: "GroundedPredicate") -> bool:
         return not self.__eq__(other)
 
-    def copy(self, is_negated: bool = False) -> "GroundedPredicate":
+    def copy(self, is_negated: bool = False, is_masked: bool = False) -> "GroundedPredicate":
         """Creates a copy of the grounded predicate.
 
         :param is_negated: whether the predicate is negated.
+        :param is_masked: whether the predicate is masked.
         :return: the copy of the grounded predicate.
         """
         return GroundedPredicate(
@@ -149,6 +150,7 @@ class GroundedPredicate(Predicate):
             self.signature,
             self.object_mapping,
             self.is_positive if not is_negated else not self.is_positive,
+            is_masked=is_masked,
         )
 
     @property

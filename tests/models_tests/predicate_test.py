@@ -1,5 +1,5 @@
 """Tests some basic functionality of the Predicate class."""
-from pddl_plus_parser.models import Predicate, PDDLType
+from pddl_plus_parser.models import Predicate, GroundedPredicate, PDDLType
 
 
 def test_predicate_copy_with_negated_option_false_returns_the_previous_predicate_with_its_own_is_positive_value():
@@ -120,3 +120,53 @@ def test_change_signature_returns_correct_form_of_predicate_with_signature_chang
     )
     predicate.change_signature({"?truck": "?param_0", "?driver": "?param_1"})
     assert predicate == expected_predicate_output
+
+
+def test_grounded_predicate_copy_default_is_not_masked():
+    # Arrange
+    predicate = GroundedPredicate(
+        name="at",
+        signature={"?x": PDDLType("object")},
+        object_mapping={"?x": "obj1"},
+        is_masked=True,
+    )
+
+    # Act
+    result = predicate.copy()
+
+    # Assert
+    assert result.is_masked is False
+
+
+def test_grounded_predicate_copy_with_is_masked_true_returns_masked_predicate():
+    # Arrange
+    predicate = GroundedPredicate(
+        name="at",
+        signature={"?x": PDDLType("object")},
+        object_mapping={"?x": "obj1"},
+        is_masked=False,
+    )
+
+    # Act
+    result = predicate.copy(is_masked=True)
+
+    # Assert
+    assert result.is_masked is True
+
+
+def test_grounded_predicate_copy_preserves_is_positive_and_handles_is_masked():
+    # Arrange
+    predicate = GroundedPredicate(
+        name="at",
+        signature={"?x": PDDLType("object")},
+        object_mapping={"?x": "obj1"},
+        is_positive=True,
+        is_masked=True,
+    )
+
+    # Act
+    result = predicate.copy(is_negated=True, is_masked=True)
+
+    # Assert
+    assert result.is_positive is False
+    assert result.is_masked is True
