@@ -62,14 +62,14 @@ class Action:
 
         conditional_effects = "\n\t\t"
         conditional_effects += "\t\t\n".join(
-            [str(conditional_effect) for conditional_effect in self.conditional_effects]
+            sorted(str(conditional_effect) for conditional_effect in self.conditional_effects)
         )
 
         universal_effects = "\n\t\t"
-        universal_effects += "\t\t\n".join([str(universal_effect) for universal_effect in self.universal_effects])
+        universal_effects += "\t\t\n".join(sorted(str(universal_effect) for universal_effect in self.universal_effects))
 
         if len(self.numeric_effects) > 0:
-            numeric_effects = "\t\t\n".join([effect.to_pddl() for effect in self.numeric_effects])
+            numeric_effects = "\t\t\n".join(sorted(effect.to_pddl() for effect in self.numeric_effects))
             return (
                 f"(and {simple_effects}\n"
                 f"\t\t{conditional_effects}\n"
