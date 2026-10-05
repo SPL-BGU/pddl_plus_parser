@@ -140,7 +140,7 @@ class Domain:
         )
         return (
             f"(define (domain {self.name})\n"
-            f"(:requirements {' '.join(self.requirements)})\n"
+            f"(:requirements {' '.join(sorted(self.requirements))})\n"
             f"{types_str}"
             f"{constants}"
             f"{predicates_str}"

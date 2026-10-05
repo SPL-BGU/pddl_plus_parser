@@ -171,7 +171,7 @@ class DomainExporter:
         )
         return (
             f"(define (domain {domain.name})\n"
-            f"(:requirements {' '.join(domain.requirements)})\n"
+            f"(:requirements {' '.join(sorted(domain.requirements))})\n"
             f"(:types {self.write_types(domain.types)}\n)\n\n"
             f"(:predicates {predicates}\n)\n\n"
             f"{constants}"
